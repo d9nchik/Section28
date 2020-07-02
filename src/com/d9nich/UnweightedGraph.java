@@ -77,7 +77,7 @@ public class UnweightedGraph<V> implements Graph<V> {
      */
     @Override
     public List<V> getVertices() {
-        return vertices;
+        return new ArrayList<>(vertices);
     }
 
     /**
