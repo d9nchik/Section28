@@ -129,6 +129,12 @@ class UnweightedGraphTest {
 
     @org.junit.jupiter.api.Test
     void dfs() {
+        UnweightedGraph<String>.SearchTree dfs =
+                graph1.dfs(graph1.getIndex("Chicago"));
+        java.util.List<Integer> searchOrders = dfs.getSearchOrder();
+        assertEquals(12, dfs.getNumberOfVerticesFound());
+        assertEquals("Chicago", graph1.getVertex(searchOrders.get(0)));
+        assertEquals("Seattle", graph1.getVertex(searchOrders.get(1)));
     }
 
     @org.junit.jupiter.api.Test
