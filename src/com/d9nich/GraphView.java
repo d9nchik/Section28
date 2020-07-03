@@ -1,5 +1,6 @@
 package com.d9nich;
 
+import com.d9nich.graph.Graph;
 import javafx.scene.Group;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.shape.Circle;

@@ -1,5 +1,7 @@
 package com.d9nich;
 
+import com.d9nich.graph.Graph;
+import com.d9nich.graph.UnweightedGraph;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;

@@ -1,5 +1,8 @@
 package com.d9nich;
 
+import com.d9nich.graph.Graph;
+import com.d9nich.graph.UnweightedGraph;
+
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;

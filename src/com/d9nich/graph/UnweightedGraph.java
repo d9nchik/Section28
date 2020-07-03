@@ -1,4 +1,4 @@
-package com.d9nich;
+package com.d9nich.graph;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,13 +13,13 @@ public class UnweightedGraph<V> implements Graph<V> {
     /**
      * Construct an empty graph
      */
-    protected UnweightedGraph() {
+    public UnweightedGraph() {
     }
 
     /**
      * Construct a graph from vertices and edges stored in arrays
      */
-    protected UnweightedGraph(V[] vertices, int[][] edges) {
+    public UnweightedGraph(V[] vertices, int[][] edges) {
         for (V vertex : vertices) addVertex(vertex);
         createAdjacencyLists(edges);
     }
@@ -27,7 +27,7 @@ public class UnweightedGraph<V> implements Graph<V> {
     /**
      * Construct a graph from vertices and edges stored in List
      */
-    protected UnweightedGraph(List<V> vertices, List<Edge> edges) {
+    public UnweightedGraph(List<V> vertices, List<Edge> edges) {
         for (V vertex : vertices) addVertex(vertex);
         createAdjacencyLists(edges);
     }

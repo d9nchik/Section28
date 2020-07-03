@@ -1,8 +1,10 @@
-package com.d9nich;
+package com.d9nich.graph;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -114,5 +116,34 @@ public interface Graph<V> {
         } catch (FileNotFoundException ex) {
             System.out.println("Check the filepath!");
         }
+    }
+
+    private static int isFull(boolean[] array) {
+        for (int i = 0; i < array.length; i++) {
+            if (!array[i])
+                return i;
+        }
+        return -1;
+    }
+
+    /**
+     * @return the list of components.
+     * A connected component is a maximal connected
+     * subgraph in which every pair of vertices are connected by a path
+     */
+
+    default List<List<Integer>> getConnectedComponents() {
+        final List<List<Integer>> lists = new ArrayList<>();
+        final boolean[] isSet = new boolean[getSize()];
+        int nextIndex = 0;
+        while (nextIndex != -1) {
+            List<Integer> set = dfs(nextIndex).getSearchOrder();
+            set.forEach(e -> isSet[e] = true);
+            Collections.sort(set);
+            lists.add(set);
+            nextIndex = isFull(isSet);
+        }
+
+        return lists;
     }
 }

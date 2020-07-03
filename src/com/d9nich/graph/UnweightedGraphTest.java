@@ -1,10 +1,11 @@
-package com.d9nich;
+package com.d9nich.graph;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -132,13 +133,18 @@ class UnweightedGraphTest {
     }
 
     @org.junit.jupiter.api.Test
-    void dfs() {
+    void dfs() throws IOException {
         UnweightedGraph<String>.SearchTree dfs =
                 graph1.dfs(graph1.getIndex("Chicago"));
         java.util.List<Integer> searchOrders = dfs.getSearchOrder();
         assertEquals(12, dfs.getNumberOfVerticesFound());
         assertEquals("Chicago", graph1.getVertex(searchOrders.get(0)));
         assertEquals("Seattle", graph1.getVertex(searchOrders.get(1)));
+
+        Graph<Integer> graph = UnweightedGraph.getGraphFromSource(
+                new Scanner(new File("src/com/d9nich/testFile/GraphSample2.txt")));
+        assertEquals(4, graph.dfs(0).getNumberOfVerticesFound());
+        assertEquals(2, graph.dfs(5).getNumberOfVerticesFound());
     }
 
     @org.junit.jupiter.api.Test
@@ -211,5 +217,24 @@ class UnweightedGraphTest {
         Graph<Integer> copyGraph = UnweightedGraph.getGraphFromSource(new Scanner(file));
 
         assertEquals(copyGraph, graph);
+    }
+
+    @Test
+    void getConnectedComponents() throws IOException {
+        Graph<Integer> graph = UnweightedGraph.getGraphFromSource(
+                new Scanner(new File("src/com/d9nich/testFile/GraphSample1.txt")));
+        assertEquals(1, graph.getConnectedComponents().size());
+        graph = UnweightedGraph.getGraphFromSource(
+                new Scanner(new File("src/com/d9nich/testFile/GraphSample2.txt")));
+        assertEquals(2, graph.getConnectedComponents().size());
+
+    }
+
+    @Test
+    void getGraphFromSource() throws FileNotFoundException {
+        Graph<Integer> graph = UnweightedGraph.getGraphFromSource(
+                new Scanner(new File("src/com/d9nich/testFile/GraphSample1.txt")));
+        assertEquals(6, graph.getSize());
+        assertEquals(2, graph.getNeighbors(0).size());
     }
 }

@@ -1,5 +1,8 @@
 package com.d9nich;
 
+import com.d9nich.graph.Edge;
+import com.d9nich.graph.Graph;
+import com.d9nich.graph.UnweightedGraph;
 import javafx.application.Application;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
