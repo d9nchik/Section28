@@ -1,8 +1,12 @@
 package com.d9nich;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Scanner;
 
 public class UnweightedGraph<V> implements Graph<V> {
     protected List<V> vertices = new ArrayList<>(); // Store vertices
@@ -206,6 +210,40 @@ public class UnweightedGraph<V> implements Graph<V> {
                 dfs(e.v, parent, searchOrder, isVisited); // Recursive search
             }
         }
+    }
+
+    public static UnweightedGraph<Integer> getGraphFromURL(String urlAddress) {
+        UnweightedGraph<Integer> unweightedGraph = new UnweightedGraph<>();
+        try {
+            URL url = new URL(urlAddress);
+            Scanner input = new Scanner(url.openStream());
+            final int vertexNumber = input.nextInt();
+            for (int i = 0; i < vertexNumber; i++)
+                unweightedGraph.addVertex(i);
+
+            input.nextLine();
+            while (input.hasNext()) {
+                String[] numbers = input.nextLine().split("[ ]+");
+                int vertex = Integer.parseInt(numbers[0]);
+                for (int i = 1; i < numbers.length; i++)
+                    unweightedGraph.addEdge(vertex, Integer.parseInt(numbers[i]));
+
+            }
+        } catch (MalformedURLException ex) {
+            System.out.println("Incorrect URL");
+        } catch (IOException ex) {
+            System.out.println("Stream error");
+        }
+        return unweightedGraph;
+    }
+
+    /**
+     * @return shows is graph connected. (There are path from every vertex to every vertex)
+     */
+    @Override
+    public boolean isConnected() {
+        SearchTree searchTree = dfs(0);
+        return searchTree.searchOrder.size() == getSize();
     }
 
     /**

@@ -1,6 +1,7 @@
 package com.d9nich;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 
@@ -144,7 +145,7 @@ class UnweightedGraphTest {
     @org.junit.jupiter.api.Test
     void remove() {
         graph2.remove(0, 2);
-        assertEquals(0, graph2.getNeighbors(0));
+        assertEquals(0, graph2.getNeighbors(0).size());
         assertThrows(IllegalArgumentException.class, () -> graph2.remove(0, 0));
         assertThrows(IllegalArgumentException.class, () -> graph2.remove(-1, 2));
     }
@@ -152,8 +153,22 @@ class UnweightedGraphTest {
     @org.junit.jupiter.api.Test
     void testRemove() {
         graph2.remove("Mark");
-        assertEquals(0, graph2.getNeighbors(2));
+        assertEquals(0, graph2.getNeighbors(2).size());
         assertThrows(IllegalArgumentException.class, () -> graph2.remove(0, 0));
         assertThrows(IllegalArgumentException.class, () -> graph2.remove(-1, 2));
+    }
+
+    @Test
+    void isConnected() {
+        Graph<Integer> graph = new UnweightedGraph<>();
+        for (int i = 0; i < 4; i++)
+            graph.addVertex(i);
+        graph.addEdge(new Edge(0, 1));
+        graph.addEdge(2, 3);
+        assertFalse(graph.isConnected());
+        graph.addEdge(1, 3);
+        assertFalse(graph.isConnected());
+        graph.addEdge(1, 2);
+        assertTrue(graph.isConnected());
     }
 }

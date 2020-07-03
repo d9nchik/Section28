@@ -1,5 +1,9 @@
 package com.d9nich;
 
+/**
+ * @param <V> marks of node
+ * @author d9nich
+ */
 public interface Graph<V> {
     /**
      * Return the number of vertices in the graph
@@ -76,4 +80,9 @@ public interface Graph<V> {
      * Obtain a breadth-first search tree
      */
     UnweightedGraph<V>.SearchTree bfs(int v);
+
+    /**
+     * @return shows is graph connected. (There are path from every vertex to every vertex)
+     */
+    boolean isConnected();
 }
