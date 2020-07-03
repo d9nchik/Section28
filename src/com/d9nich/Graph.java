@@ -1,5 +1,10 @@
 package com.d9nich;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.util.List;
+
 /**
  * @param <V> marks of node
  * @author d9nich
@@ -84,5 +89,30 @@ public interface Graph<V> {
     /**
      * @return shows is graph connected. (There are path from every vertex to every vertex)
      */
-    boolean isConnected();
+    default boolean isConnected() {
+        UnweightedGraph<V>.SearchTree tree = dfs(0);
+        return tree.getNumberOfVerticesFound() == getSize();
+    }
+
+    /**
+     * @param filepath path to text file, where program should write text representation of graph.
+     */
+    default void toTextFile(String filepath) {
+        try (PrintWriter output = new PrintWriter(new File(filepath))) {
+            final int size = getSize();
+            output.println(size);
+            for (int i = 0; i < size; i++) {
+                List<Integer> neighbors = getNeighbors(i);
+                if (neighbors.size() == 0)
+                    continue;
+                StringBuilder stringBuilder = new StringBuilder();
+                stringBuilder.append(i).append(" ");
+                neighbors.forEach(e -> stringBuilder.append(e).append(" "));
+                stringBuilder.deleteCharAt(stringBuilder.length() - 1);
+                output.println(stringBuilder.toString());
+            }
+        } catch (FileNotFoundException ex) {
+            System.out.println("Check the filepath!");
+        }
+    }
 }

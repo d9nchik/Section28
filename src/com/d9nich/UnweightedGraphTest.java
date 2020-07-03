@@ -3,7 +3,10 @@ package com.d9nich;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -170,5 +173,44 @@ class UnweightedGraphTest {
         assertFalse(graph.isConnected());
         graph.addEdge(1, 2);
         assertTrue(graph.isConnected());
+    }
+
+    @Test
+    void equals() {
+        Graph<Integer> graph = new UnweightedGraph<>();
+        Graph<Integer> graphCopy = new UnweightedGraph<>();
+
+        for (int i = 0; i < 4; i++) {
+            graph.addVertex(i);
+            graphCopy.addVertex(i);
+        }
+        graph.addEdge(new Edge(0, 1));
+        graph.addEdge(2, 3);
+        assertNotEquals(graphCopy, graph);
+
+        graphCopy.addEdge(0, 1);
+        graphCopy.addEdge(2, 3);
+        assertEquals(graphCopy, graph);
+
+        graph.addEdge(1, 2);
+        assertNotEquals(graphCopy, graph);
+    }
+
+    @Test
+    void toTextFile() throws FileNotFoundException {
+        Graph<Integer> graph = new UnweightedGraph<>();
+        for (int i = 0; i < 4; i++)
+            graph.addVertex(i);
+        graph.addEdge(new Edge(0, 1));
+        graph.addEdge(2, 3);
+        graph.toTextFile("/tmp/graph.txt");
+        File file = new File("/tmp/graph.txt");
+        file.deleteOnExit();
+        assertTrue(file.exists());
+
+
+        Graph<Integer> copyGraph = UnweightedGraph.getGraphFromSource(new Scanner(file));
+
+        assertEquals(copyGraph, graph);
     }
 }

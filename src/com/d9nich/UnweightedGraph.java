@@ -1,8 +1,5 @@
 package com.d9nich;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -212,38 +209,27 @@ public class UnweightedGraph<V> implements Graph<V> {
         }
     }
 
-    public static UnweightedGraph<Integer> getGraphFromURL(String urlAddress) {
-        UnweightedGraph<Integer> unweightedGraph = new UnweightedGraph<>();
-        try {
-            URL url = new URL(urlAddress);
-            Scanner input = new Scanner(url.openStream());
-            final int vertexNumber = input.nextInt();
-            for (int i = 0; i < vertexNumber; i++)
-                unweightedGraph.addVertex(i);
-
-            input.nextLine();
-            while (input.hasNext()) {
-                String[] numbers = input.nextLine().split("[ ]+");
-                int vertex = Integer.parseInt(numbers[0]);
-                for (int i = 1; i < numbers.length; i++)
-                    unweightedGraph.addEdge(vertex, Integer.parseInt(numbers[i]));
-
-            }
-        } catch (MalformedURLException ex) {
-            System.out.println("Incorrect URL");
-        } catch (IOException ex) {
-            System.out.println("Stream error");
-        }
-        return unweightedGraph;
-    }
-
     /**
-     * @return shows is graph connected. (There are path from every vertex to every vertex)
+     * @param input stream from which we can read data
+     * @return created graph from data of stream
      */
-    @Override
-    public boolean isConnected() {
-        SearchTree searchTree = dfs(0);
-        return searchTree.searchOrder.size() == getSize();
+    public static UnweightedGraph<Integer> getGraphFromSource(Scanner input) {
+        UnweightedGraph<Integer> unweightedGraph = new UnweightedGraph<>();
+        final int vertexNumber = input.nextInt();
+        for (int i = 0; i < vertexNumber; i++)
+            unweightedGraph.addVertex(i);
+
+        input.nextLine();
+        while (input.hasNext()) {
+            final String line = input.nextLine();
+            String[] numbers = line.split("[ ]+");
+            int vertex = Integer.parseInt(numbers[0]);
+            for (int i = 1; i < numbers.length; i++)
+                unweightedGraph.addEdge(vertex, Integer.parseInt(numbers[i]));
+
+        }
+            input.close();
+        return unweightedGraph;
     }
 
     /**
@@ -288,6 +274,24 @@ public class UnweightedGraph<V> implements Graph<V> {
     @Override
     public boolean remove(int u, int v) {
         return true; // Implementation left as an exercise
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        UnweightedGraph<?> that = (UnweightedGraph<?>) o;
+
+        if (!vertices.equals(that.vertices)) return false;
+        return neighbors.equals(that.neighbors);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = vertices.hashCode();
+        result = 31 * result + neighbors.hashCode();
+        return result;
     }
 
     /**
