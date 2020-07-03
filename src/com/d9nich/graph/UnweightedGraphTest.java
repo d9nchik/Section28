@@ -140,6 +140,7 @@ class UnweightedGraphTest {
         assertEquals(12, dfs.getNumberOfVerticesFound());
         assertEquals("Chicago", graph1.getVertex(searchOrders.get(0)));
         assertEquals("Seattle", graph1.getVertex(searchOrders.get(1)));
+        assertEquals("Dallas", graph1.getVertex(searchOrders.get(11)));
 
         Graph<Integer> graph = UnweightedGraph.getGraphFromSource(
                 new Scanner(new File("src/com/d9nich/testFile/GraphSample2.txt")));
@@ -148,7 +149,19 @@ class UnweightedGraphTest {
     }
 
     @org.junit.jupiter.api.Test
-    void bfs() {
+    void bfs() throws FileNotFoundException {
+        UnweightedGraph<String>.SearchTree bfs =
+                graph1.bfs(graph1.getIndex("Chicago"));
+        java.util.List<Integer> searchOrders = bfs.getSearchOrder();
+        assertEquals(12, bfs.getNumberOfVerticesFound());
+        assertEquals("Chicago", graph1.getVertex(searchOrders.get(0)));
+        assertEquals("Seattle", graph1.getVertex(searchOrders.get(1)));
+        assertEquals("Houston", graph1.getVertex(searchOrders.get(11)));
+
+        Graph<Integer> graph = UnweightedGraph.getGraphFromSource(
+                new Scanner(new File("src/com/d9nich/testFile/GraphSample2.txt")));
+        assertEquals(4, graph.dfs(0).getNumberOfVerticesFound());
+        assertEquals(2, graph.dfs(5).getNumberOfVerticesFound());
     }
 
     @org.junit.jupiter.api.Test
