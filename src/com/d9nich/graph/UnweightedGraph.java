@@ -243,6 +243,41 @@ public class UnweightedGraph<V> implements Graph<V> {
     }
 
     /**
+     *
+     * @return has graph cycles or not
+     */
+    @Override
+    public boolean isCyclic() {
+        boolean[] visitedInApproach = new boolean[getSize()];
+        boolean[] isVisited = new boolean[getSize()];
+        for (int i = 0; i < getSize(); i++)
+            if (!isVisited[i] && isCyclic(i, visitedInApproach, isVisited))
+                return true;
+        return false;
+    }
+
+    /**
+     *
+     * @param v number of vertex we want to explore
+     * @param visitedInApproach nodes that forms full path from current to root
+     * @param isVisited nodes we already visited
+     * @return weather we found cycle on our attempt
+     */
+    private boolean isCyclic(int v, boolean[] visitedInApproach, boolean[] isVisited) {
+        isVisited[v] = true; // Vertex v visited
+        visitedInApproach[v] = true;
+        for (Edge e : neighbors.get(v)) {// e.u is v
+            if (!isVisited[e.v]) {
+                if (isCyclic(e.v, visitedInApproach, isVisited))// Recursive search
+                    return true;
+            } else if (visitedInApproach[e.v])
+                return true;
+        }
+        visitedInApproach[v] = false;
+        return false;
+    }
+
+    /**
      * Remove vertex v and return true if successful
      */
     @Override

@@ -250,4 +250,16 @@ class UnweightedGraphTest {
         assertEquals(6, graph.getSize());
         assertEquals(2, graph.getNeighbors(0).size());
     }
+
+    @Test
+    void isCyclic() throws FileNotFoundException {
+        Graph<Integer> graph = UnweightedGraph.getGraphFromSource(
+                new Scanner(new File("src/com/d9nich/testFile/GraphSample1.txt")));
+        assertTrue(graph.isCyclic());
+        graph = UnweightedGraph.getGraphFromSource(
+                new Scanner(new File("src/com/d9nich/testFile/GraphSample2.txt")));
+        assertTrue(graph.isCyclic());
+
+        assertFalse(graph2.isCyclic());
+    }
 }

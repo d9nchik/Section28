@@ -146,4 +146,9 @@ public interface Graph<V> {
 
         return lists;
     }
+
+    /**
+     * @return has graph cycles or not
+     */
+    boolean isCyclic();
 }
