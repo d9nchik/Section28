@@ -36,7 +36,14 @@ class UnweightedGraphTest {
     java.util.ArrayList<Edge> edgeList
             = new java.util.ArrayList<>();
     Graph<String> graph2;
-    Graph<String> graph3 = new UnweightedGraph<>();
+    Graph<String> emptyGraph = new UnweightedGraph<>();
+    Graph<Integer> textGraph1 = UnweightedGraph.getGraphFromSource(
+            new Scanner(new File("src/com/d9nich/testFile/GraphSample1.txt")));
+    Graph<Integer> textGraph2 = UnweightedGraph.getGraphFromSource(
+            new Scanner(new File("src/com/d9nich/testFile/GraphSample2.txt")));
+
+    UnweightedGraphTest() throws FileNotFoundException {
+    }
 
     @BeforeEach
     public void setUP() {
@@ -56,9 +63,9 @@ class UnweightedGraphTest {
 
     @org.junit.jupiter.api.Test
     void getVertices() {
-        assertEquals(new ArrayList<>(), graph3.getVertices());
-        graph3.getVertices().add("Something");
-        assertEquals(0, graph3.getSize());
+        assertEquals(new ArrayList<>(), emptyGraph.getVertices());
+        emptyGraph.getVertices().add("Something");
+        assertEquals(0, emptyGraph.getSize());
     }
 
     @org.junit.jupiter.api.Test
@@ -73,7 +80,7 @@ class UnweightedGraphTest {
     void getIndex() {
         assertEquals(9, graph1.getIndex("Miami"));
         assertEquals(3, graph2.getIndex("Cindy"));
-        assertEquals(-1, graph3.getIndex("go"));
+        assertEquals(-1, emptyGraph.getIndex("go"));
     }
 
     @org.junit.jupiter.api.Test
@@ -102,12 +109,12 @@ class UnweightedGraphTest {
 
     @org.junit.jupiter.api.Test
     void addVertex() {
-        graph3.addVertex("five");
-        assertEquals(1, graph3.getVertices().size());
-        assertEquals("five", graph3.getVertex(0));
-        graph3.addVertex("five");
-        assertEquals(1, graph3.getVertices().size());
-        assertEquals("five", graph3.getVertex(0));
+        emptyGraph.addVertex("five");
+        assertEquals(1, emptyGraph.getVertices().size());
+        assertEquals("five", emptyGraph.getVertex(0));
+        emptyGraph.addVertex("five");
+        assertEquals(1, emptyGraph.getVertices().size());
+        assertEquals("five", emptyGraph.getVertex(0));
     }
 
     @org.junit.jupiter.api.Test
@@ -133,7 +140,7 @@ class UnweightedGraphTest {
     }
 
     @org.junit.jupiter.api.Test
-    void dfs() throws IOException {
+    void dfs() {
         UnweightedGraph<String>.SearchTree dfs =
                 graph1.dfs(graph1.getIndex("Chicago"));
         java.util.List<Integer> searchOrders = dfs.getSearchOrder();
@@ -142,14 +149,13 @@ class UnweightedGraphTest {
         assertEquals("Seattle", graph1.getVertex(searchOrders.get(1)));
         assertEquals("Dallas", graph1.getVertex(searchOrders.get(11)));
 
-        Graph<Integer> graph = UnweightedGraph.getGraphFromSource(
-                new Scanner(new File("src/com/d9nich/testFile/GraphSample2.txt")));
-        assertEquals(4, graph.dfs(0).getNumberOfVerticesFound());
-        assertEquals(2, graph.dfs(5).getNumberOfVerticesFound());
+
+        assertEquals(4, textGraph2.dfs(0).getNumberOfVerticesFound());
+        assertEquals(2, textGraph2.dfs(5).getNumberOfVerticesFound());
     }
 
     @org.junit.jupiter.api.Test
-    void bfs() throws FileNotFoundException {
+    void bfs() {
         UnweightedGraph<String>.SearchTree bfs =
                 graph1.bfs(graph1.getIndex("Chicago"));
         java.util.List<Integer> searchOrders = bfs.getSearchOrder();
@@ -158,10 +164,8 @@ class UnweightedGraphTest {
         assertEquals("Seattle", graph1.getVertex(searchOrders.get(1)));
         assertEquals("Houston", graph1.getVertex(searchOrders.get(11)));
 
-        Graph<Integer> graph = UnweightedGraph.getGraphFromSource(
-                new Scanner(new File("src/com/d9nich/testFile/GraphSample2.txt")));
-        assertEquals(4, graph.dfs(0).getNumberOfVerticesFound());
-        assertEquals(2, graph.dfs(5).getNumberOfVerticesFound());
+        assertEquals(4, textGraph2.dfs(0).getNumberOfVerticesFound());
+        assertEquals(2, textGraph2.dfs(5).getNumberOfVerticesFound());
     }
 
     @org.junit.jupiter.api.Test
@@ -233,32 +237,22 @@ class UnweightedGraphTest {
     }
 
     @Test
-    void getConnectedComponents() throws IOException {
-        Graph<Integer> graph = UnweightedGraph.getGraphFromSource(
-                new Scanner(new File("src/com/d9nich/testFile/GraphSample1.txt")));
-        assertEquals(1, graph.getConnectedComponents().size());
-        graph = UnweightedGraph.getGraphFromSource(
-                new Scanner(new File("src/com/d9nich/testFile/GraphSample2.txt")));
-        assertEquals(2, graph.getConnectedComponents().size());
+    void getConnectedComponents() {
+        assertEquals(1, textGraph1.getConnectedComponents().size());
+        assertEquals(2, textGraph2.getConnectedComponents().size());
 
     }
 
     @Test
-    void getGraphFromSource() throws FileNotFoundException {
-        Graph<Integer> graph = UnweightedGraph.getGraphFromSource(
-                new Scanner(new File("src/com/d9nich/testFile/GraphSample1.txt")));
-        assertEquals(6, graph.getSize());
-        assertEquals(2, graph.getNeighbors(0).size());
+    void getGraphFromSource() {
+        assertEquals(6, textGraph1.getSize());
+        assertEquals(2, textGraph1.getNeighbors(0).size());
     }
 
     @Test
-    void isCyclic() throws FileNotFoundException {
-        Graph<Integer> graph = UnweightedGraph.getGraphFromSource(
-                new Scanner(new File("src/com/d9nich/testFile/GraphSample1.txt")));
-        assertTrue(graph.isCyclic());
-        graph = UnweightedGraph.getGraphFromSource(
-                new Scanner(new File("src/com/d9nich/testFile/GraphSample2.txt")));
-        assertTrue(graph.isCyclic());
+    void isCyclic() {
+        assertTrue(textGraph1.isCyclic());
+        assertTrue(textGraph2.isCyclic());
 
         assertFalse(graph2.isCyclic());
     }
