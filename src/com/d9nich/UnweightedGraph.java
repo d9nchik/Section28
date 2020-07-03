@@ -33,24 +33,6 @@ public class UnweightedGraph<V> implements Graph<V> {
     }
 
     /**
-     * Construct a graph for integer vertices 0, 1, 2 and edge list
-     */
-    protected UnweightedGraph(List<Edge> edges, int numberOfVertices) {
-        for (int i = 0; i < numberOfVertices; i++)
-            addVertex((V) (new Integer(i))); // vertices is {0, 1, . . . }
-        createAdjacencyLists(edges);
-    }
-
-    /**
-     * Construct a graph from integer vertices 0, 1, and edge array
-     */
-    protected UnweightedGraph(int[][] edges, int numberOfVertices) {
-        for (int i = 0; i < numberOfVertices; i++)
-            addVertex((V) (new Integer(i))); // vertices is {0, 1, . . . }
-        createAdjacencyLists(edges);
-    }
-
-    /**
      * Create adjacency lists for each vertex
      */
     private void createAdjacencyLists(int[][] edges) {
@@ -228,7 +210,7 @@ public class UnweightedGraph<V> implements Graph<V> {
                 unweightedGraph.addEdge(vertex, Integer.parseInt(numbers[i]));
 
         }
-            input.close();
+        input.close();
         return unweightedGraph;
     }
 
@@ -265,6 +247,12 @@ public class UnweightedGraph<V> implements Graph<V> {
      */
     @Override
     public boolean remove(V v) {
+        if (!vertices.contains(v))
+            throw new NoSuchFieldError(v + " not found.");
+        int index = getIndex(v);
+        neighbors.remove(neighbors.get(index));
+        vertices.remove(v);
+        neighbors.forEach(edges -> edges.removeIf(edge -> edge.v == index));
         return true; // Implementation left as an exercise
     }
 
@@ -273,7 +261,15 @@ public class UnweightedGraph<V> implements Graph<V> {
      */
     @Override
     public boolean remove(int u, int v) {
-        return true; // Implementation left as an exercise
+        if (u < 0 || u > getSize() - 1)
+            throw new IllegalArgumentException("No such index: " + u);
+        if (v < 0 || v > getSize() - 1)
+            throw new IllegalArgumentException("No such index: " + v);
+        if (neighbors.get(u).contains(new Edge(u, v))) {
+            neighbors.get(u).remove(new Edge(u, v));
+            return true;
+        }
+        return false;// Implementation left as an exercise
     }
 
     @Override

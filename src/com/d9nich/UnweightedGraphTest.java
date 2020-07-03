@@ -147,18 +147,17 @@ class UnweightedGraphTest {
 
     @org.junit.jupiter.api.Test
     void remove() {
-        graph2.remove(0, 2);
+        assertTrue(graph2.remove(0, 2));
         assertEquals(0, graph2.getNeighbors(0).size());
-        assertThrows(IllegalArgumentException.class, () -> graph2.remove(0, 0));
+        assertFalse(graph2.remove(0, 0));
         assertThrows(IllegalArgumentException.class, () -> graph2.remove(-1, 2));
     }
 
     @org.junit.jupiter.api.Test
     void testRemove() {
         graph2.remove("Mark");
-        assertEquals(0, graph2.getNeighbors(2).size());
-        assertThrows(IllegalArgumentException.class, () -> graph2.remove(0, 0));
-        assertThrows(IllegalArgumentException.class, () -> graph2.remove(-1, 2));
+        assertEquals(-1, graph2.getIndex("Mark"));
+        assertThrows(NoSuchFieldError.class, () -> graph2.remove("Vertix"));
     }
 
     @Test
