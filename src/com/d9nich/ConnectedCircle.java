@@ -33,22 +33,24 @@ public class ConnectedCircle extends Application {
     static class CirclePane extends Pane {
         public CirclePane() {
             this.setOnMouseClicked(e -> {
-                if (!isInsideACircle(new Point2D(e.getX(), e.getY()))) {
+                final Node circle = getCircleContainsPoint(new Point2D(e.getX(), e.getY()));
+                if (circle == null)
                     // Add a new circle
                     getChildren().add(new Circle(e.getX(), e.getY(), 20));
-                    colorIfConnected();
-                }
+                else
+                    getChildren().remove(circle);
+                colorIfConnected();
             });
         }
 
         /**
          * Returns true if the point is inside an existing circle
          */
-        private boolean isInsideACircle(Point2D p) {
+        private Node getCircleContainsPoint(Point2D p) {
             for (Node circle : this.getChildren())
                 if (circle.contains(p))
-                    return true;
-            return false;
+                    return circle;
+            return null;
         }
 
         /**
