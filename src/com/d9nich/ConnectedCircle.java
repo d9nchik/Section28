@@ -7,6 +7,7 @@ import javafx.application.Application;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -32,12 +33,18 @@ public class ConnectedCircle extends Application {
      */
     static class CirclePane extends Pane {
         public CirclePane() {
-            this.setOnMouseClicked(e -> {
+            setOnMouseClicked(e -> {
                 final Node circle = getCircleContainsPoint(new Point2D(e.getX(), e.getY()));
-                if (circle == null)
+                if (circle == null) {
                     // Add a new circle
-                    getChildren().add(new Circle(e.getX(), e.getY(), 20));
-                else
+                    final Circle circle1 = new Circle(e.getX(), e.getY(), 20);
+                    circle1.setOnMouseDragged(e1 -> {
+                        circle1.setCenterX(e1.getX());
+                        circle1.setCenterY(e1.getY());
+                    });
+                    getChildren().add(circle1);
+
+                } else if (e.getButton() == MouseButton.SECONDARY)
                     getChildren().remove(circle);
                 colorIfConnected();
             });
