@@ -164,4 +164,10 @@ public interface Graph<V> {
      */
     boolean isBipartite();
 
+    /**
+     * @return a List that contains two sublists, each of which contains a
+     * set of vertices. If the graph is not bipartite, the method returns null .
+     */
+    List<List<Integer>> getBipartite();
+
 }

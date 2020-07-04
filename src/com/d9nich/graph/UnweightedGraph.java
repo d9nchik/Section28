@@ -328,6 +328,35 @@ public class UnweightedGraph<V> implements Graph<V> {
         return true;
     }
 
+    /**
+     * @return a List that contains two sublists, each of which contains a
+     * set of vertices. If the graph is not bipartite, the method returns null .
+     */
+    public List<List<Integer>> getBipartite() {
+        int[] colours = new int[getSize()];
+        Arrays.fill(colours, -1);
+        for (int i = 0; i < colours.length; i++)
+            if (colours[i] == -1) {
+                colours[i] = 1;
+                if (isNotBipartiteColourVertex(i, colours))
+                    return null;
+            }
+
+        List<List<Integer>> lists = new ArrayList<>();
+        ArrayList<Integer> firstPart = new ArrayList<>();
+        ArrayList<Integer> secondPart = new ArrayList<>();
+        lists.add(firstPart);
+        lists.add(secondPart);
+
+        for (int i = 0; i < colours.length; i++)
+            if (colours[i] == 1)
+                firstPart.add(i);
+            else
+                secondPart.add(i);
+
+        return lists;
+    }
+
 
     /**
      * @param vertex  for which children we are searching colours and checking, if they`re valid

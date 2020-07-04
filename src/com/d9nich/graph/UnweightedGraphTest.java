@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -267,6 +268,26 @@ class UnweightedGraphTest {
     void isBipartite() {
         assertFalse(textGraph1.isBipartite());
         assertFalse(textGraph2.isBipartite());
+        assertTrue(getBipartiteGraph().isBipartite());
+    }
+
+    @Test
+    void getBipartite() {
+        assertNull(textGraph1.getBipartite());
+        Graph<Integer> graph = getBipartiteGraph();
+
+        List<List<Integer>> lists = new ArrayList<>();
+        ArrayList<Integer> firstPart = new ArrayList<>();
+        ArrayList<Integer> secondPart = new ArrayList<>();
+        lists.add(firstPart);
+        lists.add(secondPart);
+        firstPart.add(0);
+        firstPart.add(2);
+        secondPart.add(1);
+        assertEquals(lists, graph.getBipartite());
+    }
+
+    private Graph<Integer> getBipartiteGraph() {
         Graph<Integer> graph = new UnweightedGraph<>();
         graph.addVertex(0);
         graph.addVertex(1);
@@ -275,6 +296,6 @@ class UnweightedGraphTest {
         graph.addEdge(1, 0);
         graph.addEdge(1, 2);
         graph.addEdge(2, 1);
-        assertTrue(graph.isBipartite());
+        return graph;
     }
 }
