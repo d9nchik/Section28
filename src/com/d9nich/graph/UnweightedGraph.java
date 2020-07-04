@@ -243,7 +243,6 @@ public class UnweightedGraph<V> implements Graph<V> {
     }
 
     /**
-     *
      * @return has graph cycles or not
      */
     @Override
@@ -257,10 +256,9 @@ public class UnweightedGraph<V> implements Graph<V> {
     }
 
     /**
-     *
-     * @param v number of vertex we want to explore
+     * @param v                 number of vertex we want to explore
      * @param visitedInApproach nodes that forms full path from current to root
-     * @param isVisited nodes we already visited
+     * @param isVisited         nodes we already visited
      * @return weather we found cycle on our attempt
      */
     private boolean isCyclic(int v, boolean[] visitedInApproach, boolean[] isVisited) {
@@ -274,6 +272,43 @@ public class UnweightedGraph<V> implements Graph<V> {
                 return true;
         }
         visitedInApproach[v] = false;
+        return false;
+    }
+
+    /**
+     * @param u starting vertex
+     * @return a List that contains all the vertices in a cycle starting from
+     * u. If the graph doesn’t have any cycles, the method returns null.
+     */
+    public List<Integer> getACycle(int u) {
+        ArrayList<Integer> cyclePath = new ArrayList<>();
+        boolean[] isVisited = new boolean[getSize()];
+        isVisited[u] = true;
+        cyclePath.add(u);
+        for (Integer neighbour : getNeighbors(u))
+            if (foundCycle(neighbour, cyclePath, isVisited, u))
+                return cyclePath;
+        return null;
+    }
+
+    /**
+     * @param vertex    which vertex we explore now
+     * @param cyclePath path of vertices, that forms cycle
+     * @param isVisited list of state of form, that are visited or not
+     * @param endVertex node which should be end of our path
+     * @return is cycle found on current step or not
+     */
+    private boolean foundCycle(int vertex, ArrayList<Integer> cyclePath, boolean[] isVisited, int endVertex) {
+        cyclePath.add(vertex);
+        isVisited[vertex] = true;
+        for (Integer neighbour : getNeighbors(vertex)) {
+            if (neighbour == endVertex)
+                return true;
+
+            if (!isVisited[neighbour] && foundCycle(neighbour, cyclePath, isVisited, endVertex))
+                return true;
+        }
+        cyclePath.remove(cyclePath.size() - 1);
         return false;
     }
 

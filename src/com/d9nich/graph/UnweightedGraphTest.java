@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -255,5 +254,12 @@ class UnweightedGraphTest {
         assertTrue(textGraph2.isCyclic());
 
         assertFalse(graph2.isCyclic());
+    }
+
+    @Test
+    void getACycle() {
+        assertEquals(6, textGraph1.getACycle(5).size());
+        assertEquals(2, textGraph2.getACycle(4).size());
+        assertNull(graph2.getACycle(0));
     }
 }

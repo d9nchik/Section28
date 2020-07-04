@@ -119,10 +119,9 @@ public interface Graph<V> {
     }
 
     private static int isFull(boolean[] array) {
-        for (int i = 0; i < array.length; i++) {
+        for (int i = 0; i < array.length; i++)
             if (!array[i])
                 return i;
-        }
         return -1;
     }
 
@@ -151,4 +150,11 @@ public interface Graph<V> {
      * @return has graph cycles or not
      */
     boolean isCyclic();
+
+    /**
+     * @param u starting vertex
+     * @return a List that contains all the vertices in a cycle starting from
+     * u. If the graph doesn’t have any cycles, the method returns null.
+     */
+    List<Integer> getACycle(int u);
 }
