@@ -3,32 +3,26 @@ package com.d9nich;
 import com.d9nich.graph.Graph;
 import com.d9nich.graph.UnweightedGraph;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class Main {
 
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
-        System.out.println("Enter a URL:");
+        System.out.print("Enter a file name: ");//src/com/d9nich/testFile/GraphSample1.txt
         try {
-            Graph<Integer> graph = UnweightedGraph.getGraphFromSource(
-                    new Scanner(new URL(input.nextLine()).openStream()));
-            //try https://liveexample.pearsoncmg.com/test/GraphSample1.txt
+            Graph<Integer> graph = UnweightedGraph.getGraphFromSource(new Scanner(new File(input.nextLine())));
+            System.out.print("Enter two vertices (integer indexes): ");
+            int start = input.nextInt();
+            int finish = input.nextInt();
             graph.printEdges();
-
-            System.out.print("The graph is");
-            if (!graph.isConnected()) {
-                System.out.print(" not");
-            }
-            System.out.println(" connected.");
-        } catch (MalformedURLException ex) {
-            System.out.println("Incorrect URL");
-        } catch (IOException ex) {
-            System.out.println("Stream problem");
+            System.out.print("The path is ");
+            graph.bfs(finish).getPath(start).forEach(e -> System.out.print(e + " "));
+            System.out.println();
+        } catch (FileNotFoundException e) {
+            System.out.println("File name is incorrect!");
         }
-
     }
 }
