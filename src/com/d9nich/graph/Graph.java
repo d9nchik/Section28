@@ -157,4 +157,11 @@ public interface Graph<V> {
      * u. If the graph doesn’t have any cycles, the method returns null.
      */
     List<Integer> getACycle(int u);
+
+    /**
+     * @return A graph is bipartite if its vertices can be divided
+     * into two disjoint sets such that no edges exist between vertices in the same set.
+     */
+    boolean isBipartite();
+
 }

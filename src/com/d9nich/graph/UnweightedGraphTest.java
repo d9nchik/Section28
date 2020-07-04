@@ -262,4 +262,19 @@ class UnweightedGraphTest {
         assertEquals(2, textGraph2.getACycle(4).size());
         assertNull(graph2.getACycle(0));
     }
+
+    @Test
+    void isBipartite() {
+        assertFalse(textGraph1.isBipartite());
+        assertFalse(textGraph2.isBipartite());
+        Graph<Integer> graph = new UnweightedGraph<>();
+        graph.addVertex(0);
+        graph.addVertex(1);
+        graph.addVertex(2);
+        graph.addEdge(0, 1);
+        graph.addEdge(1, 0);
+        graph.addEdge(1, 2);
+        graph.addEdge(2, 1);
+        assertTrue(graph.isBipartite());
+    }
 }

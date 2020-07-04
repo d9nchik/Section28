@@ -313,6 +313,40 @@ public class UnweightedGraph<V> implements Graph<V> {
     }
 
     /**
+     * @return A graph is bipartite if its vertices can be divided
+     * into two disjoint sets such that no edges exist between vertices in the same set.
+     */
+    public boolean isBipartite() {
+        int[] colours = new int[getSize()];
+        Arrays.fill(colours, -1);
+        for (int i = 0; i < colours.length; i++)
+            if (colours[i] == -1) {
+                colours[i] = 1;
+                if (isNotBipartiteColourVertex(i, colours))
+                    return false;
+            }
+        return true;
+    }
+
+
+    /**
+     * @param vertex  for which children we are searching colours and checking, if they`re valid
+     * @param colours list of colours linked to each node
+     * @return can be graph bipartite in case of this vertex.
+     */
+    private boolean isNotBipartiteColourVertex(int vertex, int[] colours) {
+        int colour = colours[vertex];
+        for (Integer neighbour : getNeighbors(vertex))
+            if (colours[neighbour] == -1) {
+                colours[neighbour] = (colour + 1) % 2;
+                if (isNotBipartiteColourVertex(neighbour, colours))
+                    return true;
+            } else if (colours[neighbour] == colour)
+                return true;
+        return false;
+    }
+
+    /**
      * Remove vertex v and return true if successful
      */
     @Override
