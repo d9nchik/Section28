@@ -34,6 +34,12 @@ public class NineTailModel {
         flipACell(node, row + 1, column);
         flipACell(node, row, column - 1);
         flipACell(node, row, column + 1);
+
+        //Diagonal flip
+        flipACell(node, row - 1, column - 1);
+        flipACell(node, row + 1, column - 1);
+        flipACell(node, row + 1, column + 1);
+        flipACell(node, row - 1, column + 1);
         return getIndex(node);
     }
 
@@ -83,8 +89,7 @@ public class NineTailModel {
      * Create all edges for the graph
      */
     private List<Edge> getEdges() {
-        List<Edge> edges =
-                new ArrayList<>(); // Store edges
+        List<Edge> edges = new ArrayList<>(); // Store edges
         for (int u = 0; u < NUMBER_OF_NODES; u++) {
             for (int k = 0; k < 9; k++) {
                 char[] node = getNode(u); // Get the node for vertex u
