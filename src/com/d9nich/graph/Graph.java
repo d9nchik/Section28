@@ -170,4 +170,9 @@ public interface Graph<V> {
      */
     List<List<Integer>> getBipartite();
 
+    /**
+     * @return returns list of number sequence, that forms hamilton cycle.
+     * If hamilton cycle is not found return null.
+     */
+    List<Integer> getHamiltonianCycle();
 }

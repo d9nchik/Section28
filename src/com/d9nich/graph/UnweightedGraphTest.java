@@ -298,4 +298,14 @@ class UnweightedGraphTest {
         graph.addEdge(2, 1);
         return graph;
     }
+
+    @Test
+    void getHamiltonCycle() {
+        assertNull(textGraph2.getHamiltonianCycle());
+
+        List<Integer> arrayList = textGraph1.getHamiltonianCycle();
+        assertEquals(arrayList.size(), 6);
+        for (int i = 0; i < 6; i++)
+            assertTrue(arrayList.contains(i));
+    }
 }

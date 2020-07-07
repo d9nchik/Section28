@@ -292,6 +292,59 @@ public class UnweightedGraph<V> implements Graph<V> {
     }
 
     /**
+     * @param isVisited array of bool
+     * @return is array contains only true values
+     */
+    private static boolean isFull(boolean[] isVisited) {
+        for (boolean bool : isVisited)
+            if (!bool)
+                return false;
+        return true;
+    }
+
+    /**
+     * @return returns list of number sequence, that forms hamilton cycle.
+     * If hamilton cycle is not found return null.
+     */
+    @Override
+    public List<Integer> getHamiltonianCycle() {
+        ArrayList<Integer> cyclePath = new ArrayList<>();
+        boolean[] isVisited = new boolean[getSize()];
+
+        for (int i = 0; i < getSize(); i++) {
+            if (getHamiltonCycle(i, cyclePath, isVisited, i))
+                return cyclePath;
+        }
+        return null;
+    }
+
+    /**
+     * @param vertex    which vertex we explore now
+     * @param cyclePath path of vertices, that forms cycle
+     * @param isVisited list of state of form, that are visited or not
+     * @param endVertex node which should be end of our path
+     * @return is cycle found on current step or not
+     */
+    private boolean getHamiltonCycle(int vertex, ArrayList<Integer> cyclePath, boolean[] isVisited, int endVertex) {
+        cyclePath.add(vertex);
+        isVisited[vertex] = true;
+        boolean full = isFull(isVisited);
+
+        for (Integer neighbour : getNeighbors(vertex)) {
+            if (neighbour == endVertex && full)
+                return true;
+
+            if (!isVisited[neighbour] && getHamiltonCycle(neighbour, cyclePath, isVisited, endVertex))
+                return true;
+        }
+
+        isVisited[vertex] = false;
+        cyclePath.remove(cyclePath.size() - 1);
+        return false;
+    }
+
+
+    /**
      * @param vertex    which vertex we explore now
      * @param cyclePath path of vertices, that forms cycle
      * @param isVisited list of state of form, that are visited or not
@@ -316,6 +369,7 @@ public class UnweightedGraph<V> implements Graph<V> {
      * @return A graph is bipartite if its vertices can be divided
      * into two disjoint sets such that no edges exist between vertices in the same set.
      */
+    @Override
     public boolean isBipartite() {
         int[] colours = new int[getSize()];
         Arrays.fill(colours, -1);
@@ -332,6 +386,7 @@ public class UnweightedGraph<V> implements Graph<V> {
      * @return a List that contains two sublists, each of which contains a
      * set of vertices. If the graph is not bipartite, the method returns null .
      */
+    @Override
     public List<List<Integer>> getBipartite() {
         int[] colours = new int[getSize()];
         Arrays.fill(colours, -1);
